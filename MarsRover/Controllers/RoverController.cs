@@ -21,15 +21,22 @@ namespace MarsRover.Controllers
         [Route("marsrover"), HttpPost]
         public async Task<string> MarsRover([FromBody] RoverModel rover)
         {
-            var areaSize = "5,5";
+            int areaX = 5;
+            int areaY = 5;
 
-            _roverHandler.Initialize(rover.coordinateX, rover.coordinateY, rover.direction);
+            if((rover.coordinateX > 0 &&  rover.coordinateX <= areaX) && (rover.coordinateY > 0 && rover.coordinateY <= areaY))
+            {
+                _roverHandler.Initialize(rover.coordinateX, rover.coordinateY, rover.direction);
 
-            char[] moveDirectionArray = rover.moveDirection.ToCharArray();
+                char[] moveDirectionArray = rover.moveDirection.ToCharArray();
 
-            var directionMove = await _roverHandler.MoveDirection(moveDirectionArray);
+                var directionMove = await _roverHandler.MoveDirection(moveDirectionArray);
 
-            return directionMove;
+                return directionMove;
+            }
+
+            return "The coordinate is not in the area";
+            
         }
     }
 }
